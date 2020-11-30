@@ -8,4 +8,4 @@ export default (props) => {
   ));
 
   return <ul className="list-group">{channelElements}</ul>;
-}
+};

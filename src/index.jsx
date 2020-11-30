@@ -24,6 +24,6 @@ console.log(document.getElementById('chat'));
 const { channels, messages } = gon;
 
 ReactDOM.render(
-  <App channels={channels} messages={messages}/>,
-  document.getElementById('chat')
+  <App channels={channels} messages={messages} />,
+  document.getElementById('chat'),
 );
