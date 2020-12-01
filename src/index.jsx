@@ -10,6 +10,8 @@ import gon from 'gon';
 
 import ReactDOM from 'react-dom';
 import React from 'react';
+import { configureStore, createAction, createReducer } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
 import App from './components/App.jsx';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -21,9 +23,35 @@ console.log('gon', gon);
 
 console.log(document.getElementById('chat'));
 
-const { channels, messages } = gon;
+const actions = {
+  setChannels: createAction('CHANNEL_SET'),
+  setMessages: createAction('MESSAGE_SET')
+};
+
+const channels = createReducer({ byId: [], allIds: [] }, {
+  [actions.setChannels]: (state, { payload } ) => ({
+    byId: Object.fromEntries(payload.channels.map((channel) => [channel.id, channel])),
+    allIds: payload.channels.map((channel) => channel.id),
+  })
+});
+
+const messages = createReducer({ byId: [], allIds: [] }, {
+  [actions.setMessages]: (state, { payload }) => ({
+    byId: Object.fromEntries(payload.messages.map((message) => [message.id, message])),
+    allIds: payload.messages.map((message) => message.id),
+  })
+});
+
+const store = configureStore({
+  reducer: { channels, messages }
+});
+
+store.dispatch(actions.setChannels({ channels: gon.channels }));
+//store.dispatch(actions.setMessages({ channels: gon.messages }));
 
 ReactDOM.render(
-  <App channels={channels} messages={messages} />,
+  <Provider store={store}>
+    <App/>
+  </Provider>,
   document.getElementById('chat'),
 );
