@@ -7,6 +7,7 @@ console.log('isProduction', isProduction);
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
+  devtool: 'source-map',
   externals: {
     gon: 'gon',
   },
