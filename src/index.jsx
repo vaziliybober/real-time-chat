@@ -3,55 +3,44 @@ import 'regenerator-runtime/runtime';
 
 import '../assets/application.scss';
 
-// import faker from 'faker';
 import gon from 'gon';
-// import cookies from 'js-cookie';
-// import io from 'socket.io-client';
-
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { configureStore, createAction, createReducer } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
+import Cookies from 'js-cookie';
+import faker from 'faker';
+import { io } from 'socket.io-client';
 import App from './components/App.jsx';
+import UserNameContext from './contexts/UserNameContext.js';
+import actions from './actions/index.js';
+import reducer from './reducers/index.js';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
-console.log('it works!');
-console.log('gon', gon);
-
-console.log(document.getElementById('chat'));
-
-const actions = {
-  setChannels: createAction('CHANNEL_SET'),
-  setMessages: createAction('MESSAGE_SET')
-};
-
-const channels = createReducer({ byId: [], allIds: [] }, {
-  [actions.setChannels]: (state, { payload } ) => ({
-    byId: Object.fromEntries(payload.channels.map((channel) => [channel.id, channel])),
-    allIds: payload.channels.map((channel) => channel.id),
-  })
-});
-
-const messages = createReducer({ byId: [], allIds: [] }, {
-  [actions.setMessages]: (state, { payload }) => ({
-    byId: Object.fromEntries(payload.messages.map((message) => [message.id, message])),
-    allIds: payload.messages.map((message) => message.id),
-  })
-});
-
 const store = configureStore({
-  reducer: { channels, messages }
+  reducer,
 });
 
 store.dispatch(actions.setChannels({ channels: gon.channels }));
-//store.dispatch(actions.setMessages({ channels: gon.messages }));
+store.dispatch(actions.setMessages({ messages: gon.messages }));
+store.dispatch(actions.setCurrentChannelId({ id: gon.channels[0].id }));
+
+const socket = io();
+socket.on('newMessage', (data) => {
+  const message = data.data.attributes;
+  store.dispatch(actions.addMessage({ message }));
+});
+
+const userName = Cookies.get().userName ?? Cookies.set('userName', faker.name.findName());
 
 ReactDOM.render(
   <Provider store={store}>
-    <App/>
+    <UserNameContext.Provider value={userName}>
+      <App />
+    </UserNameContext.Provider>
   </Provider>,
   document.getElementById('chat'),
 );
