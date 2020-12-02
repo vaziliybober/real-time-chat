@@ -21,6 +21,9 @@ module.exports = {
   devServer: {
     publicPath: '/assets/',
     compress: true,
+    watchOptions: {
+      ignored: '**/node_modules/**'
+    },
   },
   plugins: [
     new MiniCssExtractPlugin(),
