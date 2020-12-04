@@ -38,11 +38,18 @@ socket.on('newChannel', (data) => {
   store.dispatch(actions.addChannel({ channel }));
 });
 
-let userName = Cookies.get().userName;
-if (!userName) {
-  userName = faker.name.findName();
-  Cookies.set('userName', userName);
-}
+const getOrCreateUserName = () => {
+  const cookieValue = Cookies.get().userName;
+  if (!cookieValue) {
+    const userName = faker.name.findName();
+    Cookies.set('userName', userName);
+    return userName;
+  }
+
+  return cookieValue;
+};
+
+const userName = getOrCreateUserName();
 
 ReactDOM.render(
   <Provider store={store}>
