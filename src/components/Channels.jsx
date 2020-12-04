@@ -19,6 +19,7 @@ const Channels = (props) => {
   const [showChannelNameModal, setShowChannelNameModal] = useState(false);
   const [showRemoveChannelModal, setShowRemoveChannelModal] = useState(false);
   const [removeId, setRemoveId] = useState();
+  const [removeError, setRemoveError] = useState('');
 
   const handleAdd = async ({ channelName }) => {
     const data = {
@@ -28,15 +29,20 @@ const Channels = (props) => {
     setShowChannelNameModal(false);
   };
 
+  const handleCloseRemoveChannelModal = () => {
+    setShowRemoveChannelModal(false);
+    setRemoveError('');
+  };
+
   const handleRemove = async () => {
     const params = {
       id: removeId,
     };
     try {
       await axios.delete(routes.channelPath(removeId), { params });
-      setShowRemoveChannelModal(false);
+      handleCloseRemoveChannelModal();
     } catch (e) {
-      console.log(e);
+      setRemoveError(e.message);
     }
   };
 
@@ -92,20 +98,21 @@ const Channels = (props) => {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showRemoveChannelModal} onHide={() => setShowRemoveChannelModal(false)}>
+      <Modal show={showRemoveChannelModal} onHide={handleCloseRemoveChannelModal}>
         <Modal.Header closeButton>
           <Modal.Title>Remove channel</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Are you sure?
           <div className="d-flex justify-content-between">
-            <Button className="mr-2" variant="secondary" onClick={() => setShowRemoveChannelModal(false)}>
+            <Button className="mr-2" variant="secondary" onClick={handleCloseRemoveChannelModal}>
               Cancel
             </Button>
             <Button variant="danger" onClick={handleRemove}>
               Confirm
             </Button>
           </div>
+          <Feedback className="d-block mb-2" type="invalid">{removeError}</Feedback>
         </Modal.Body>
       </Modal>
     </>
