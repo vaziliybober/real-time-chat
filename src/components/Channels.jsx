@@ -4,9 +4,10 @@ import axios from 'axios';
 import {
   Button, ButtonGroup, Dropdown, Modal,
 } from 'react-bootstrap';
+import Feedback from 'react-bootstrap/esm/Feedback';
 import actions from '../actions/index.js';
 import routes from '../routes.js';
-import NewChannelModal from './NewChannelModal.jsx';
+import ChannelNameForm from './ChannelNameForm.jsx';
 
 const Channels = (props) => {
   const { channels, currentChannelId, setCurrentChannelId } = props;
@@ -15,9 +16,17 @@ const Channels = (props) => {
     setCurrentChannelId({ id });
   };
 
-  const [showNewChannelModal, setShowNewChannelModal] = useState(false);
+  const [showChannelNameModal, setShowChannelNameModal] = useState(false);
   const [showRemoveChannelModal, setShowRemoveChannelModal] = useState(false);
   const [removeId, setRemoveId] = useState();
+
+  const handleAdd = async ({ channelName }) => {
+    const data = {
+      attributes: { name: channelName },
+    };
+    await axios.post(routes.channelsPath(), { data });
+    setShowChannelNameModal(false);
+  };
 
   const handleRemove = async () => {
     const params = {
@@ -35,7 +44,7 @@ const Channels = (props) => {
     <>
       <div className="d-flex mb-2">
         <span>Channels</span>
-        <Button onClick={() => setShowNewChannelModal(true)} variant="link" className="ml-auto p-0">+</Button>
+        <Button onClick={() => setShowChannelNameModal(true)} variant="link" className="ml-auto p-0">+</Button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
         {channels.map(({ id, name, removable }) => {
@@ -70,10 +79,19 @@ const Channels = (props) => {
           );
         })}
       </ul>
-      <NewChannelModal
-        show={showNewChannelModal}
-        handleClose={() => setShowNewChannelModal(false)}
-      />
+      <Modal show={showChannelNameModal} onHide={() => setShowChannelNameModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add channel</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ChannelNameForm
+            channelNames={channels.map((ch) => ch.name)}
+            onSubmit={handleAdd}
+            onCancel={() => setShowChannelNameModal(false)}
+          />
+        </Modal.Body>
+      </Modal>
+
       <Modal show={showRemoveChannelModal} onHide={() => setShowRemoveChannelModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Remove channel</Modal.Title>
