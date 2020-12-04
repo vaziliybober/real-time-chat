@@ -33,6 +33,10 @@ socket.on('newMessage', (data) => {
   const message = data.data.attributes;
   store.dispatch(actions.addMessage({ message }));
 });
+socket.on('newChannel', (data) => {
+  const channel = data.data.attributes;
+  store.dispatch(actions.addChannel({ channel }));
+});
 
 const userName = Cookies.get().userName ?? Cookies.set('userName', faker.name.findName());
 

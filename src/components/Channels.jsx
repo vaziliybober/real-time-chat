@@ -1,27 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import cn from 'classnames';
+import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
+import actions from '../actions/index.js';
+import NewChannelModal from './NewChannelModal.jsx';
 
 const Channels = (props) => {
-  const { channels, currentChannelId } = props;
+  const { channels, currentChannelId, setCurrentChannelId } = props;
+
+  const getSwitchHandler = (id) => () => {
+    setCurrentChannelId({ id });
+  };
+
+  const [showNewChannelModal, setShowNewChannelModal] = useState(false);
+
   return (
-    <div className="col-3 border-right">
+    <>
       <div className="d-flex mb-2">
         <span>Channels</span>
-        <button type="button" className="ml-auto p-0 btn btn-link">+</button>
+        <Button onClick={() => setShowNewChannelModal(true)} variant="link" className="ml-auto p-0">+</Button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
-        {channels.map(({ id, name }) => {
-          const btnClass = id === currentChannelId ? 'btn-primary' : 'btn-light';
-          const buttonClasses = cn('nav-link btn-block mb-2 text-left btn', btnClass);
+        {channels.map(({ id, name, removable }) => {
+          const variant = id === currentChannelId ? 'primary' : 'light';
+          if (removable) {
+            return (
+              <li key={id} className="nav-item">
+                <ButtonGroup className="d-flex mb-2 dropdown">
+                  <Button className="nav-link text-left flex-grow-1" variant={variant} onClick={getSwitchHandler(id)}>{name}</Button>
+                  <Dropdown.Toggle className="flex-grow-0" variant={variant} />
+                </ButtonGroup>
+              </li>
+
+            );
+          }
           return (
             <li key={id} className="nav-item">
-              <button type="button" className={buttonClasses}>{name}</button>
+              <Button onClick={getSwitchHandler(id)} variant={variant} className="btn-block nav-link text-left mb-2">{name}</Button>
             </li>
           );
         })}
       </ul>
-    </div>
+      <NewChannelModal
+        show={showNewChannelModal}
+        handleClose={() => setShowNewChannelModal(false)}
+      />
+    </>
   );
 };
 
@@ -34,7 +57,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-
+  setCurrentChannelId: actions.setCurrentChannelId,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Channels);

@@ -31,9 +31,9 @@ const ChatBox = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const { messages: { allIds, byId } } = state;
+  const { currentChannelId, messages: { allIds, byId } } = state;
   return {
-    messages: allIds.map((id) => byId[id]),
+    messages: allIds.map((id) => byId[id]).filter((m) => m.channelId === currentChannelId),
   };
 };
 

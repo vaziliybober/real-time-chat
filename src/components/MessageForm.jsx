@@ -1,10 +1,14 @@
 import React, {
-  useState, useRef, useEffect, useContext,
+  useRef, useEffect, useContext,
 } from 'react';
 import { connect } from 'react-redux';
 import { useFormik } from 'formik';
 import cn from 'classnames';
 import axios from 'axios';
+import {
+  Form, FormGroup, InputGroup, FormControl, Button,
+} from 'react-bootstrap';
+import Feedback from 'react-bootstrap/esm/Feedback';
 import routes from '../routes.js';
 import actions from '../actions/index.js';
 import UserNameContext from '../contexts/UserNameContext.js';
@@ -12,12 +16,11 @@ import UserNameContext from '../contexts/UserNameContext.js';
 const MessageForm = (props) => {
   const userName = useContext(UserNameContext);
 
-  const [error, setError] = useState('');
-
   const formik = useFormik({
     initialValues: {
       message: '',
     },
+    validateOnChange: false,
     onSubmit: async (values) => {
       const { currentChannelId } = props;
       const message = {
@@ -30,10 +33,11 @@ const MessageForm = (props) => {
       };
       try {
         await axios.post(routes.channelMessagesPath(message.channelId), { data });
-        setError('');
         formik.resetForm();
       } catch (e) {
-        setError(e.message);
+        formik.setErrors({
+          message: e.message,
+        });
       }
     },
   });
@@ -43,31 +47,30 @@ const MessageForm = (props) => {
     focusRef.current.focus();
   });
 
-  const inputClassNames = cn('mr-2 form-control', {
-    'is-invalid': error !== '',
+  const cnInput = cn('mr-2', {
+    'is-invalid': !!formik.errors.message,
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <div className="form-group">
-        <div className="input-group">
-          <input
-            className={inputClassNames}
+    <Form onSubmit={formik.handleSubmit}>
+      <FormGroup>
+        <InputGroup>
+          <FormControl
+            className={cnInput}
             aria-label="message"
             autoComplete="off"
             name="message"
-            type="text"
             required
             ref={focusRef}
             onChange={formik.handleChange}
             value={formik.values.message}
             disabled={formik.isSubmitting}
           />
-          <button aria-label="submit" type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>Submit</button>
-          <div className="d-block invalid-feedback">{error || '\u00A0'}</div>
-        </div>
-      </div>
-    </form>
+          <Button aria-label="submit" type="submit" disabled={formik.isSubmitting}>Submit</Button>
+          <Feedback className="d-block" type="invalid">{formik.errors.message}</Feedback>
+        </InputGroup>
+      </FormGroup>
+    </Form>
   );
 };
 

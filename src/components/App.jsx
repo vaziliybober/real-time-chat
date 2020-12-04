@@ -5,7 +5,9 @@ import MessageForm from './MessageForm';
 
 const App = () => (
   <div className="row h-100 pb-3">
-    <Channels />
+    <div className="col-3 border-right">
+      <Channels />
+    </div>
     <ChatBox>
       <MessageForm />
     </ChatBox>

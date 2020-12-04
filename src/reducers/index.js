@@ -14,6 +14,13 @@ const channelsReducer = createReducer({ byId: [], allIds: [] }, {
       allIds: channels.map((channel) => channel.id),
     };
   },
+  [actions.addChannel]: (state, { payload }) => {
+    const { channel } = payload;
+    return {
+      byId: { ...state.byId, [channel.id]: channel },
+      allIds: [...state.allIds, channel.id],
+    };
+  },
 });
 
 const messagesReducer = createReducer({ byId: [], allIds: [] }, {
