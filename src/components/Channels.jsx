@@ -16,21 +16,36 @@ const Channels = (props) => {
     setCurrentChannelId({ id });
   };
 
-  const [showChannelNameModal, setShowChannelNameModal] = useState(false);
-  const [showRemoveChannelModal, setShowRemoveChannelModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [removeId, setRemoveId] = useState();
   const [removeError, setRemoveError] = useState('');
+
+  const [showRenameModal, setShowRenameModal] = useState(false);
+  const [renameId, setRenameId] = useState();
 
   const handleAdd = async ({ channelName }) => {
     const data = {
       attributes: { name: channelName },
     };
     await axios.post(routes.channelsPath(), { data });
-    setShowChannelNameModal(false);
+    setShowAddModal(false);
   };
 
-  const handleCloseRemoveChannelModal = () => {
-    setShowRemoveChannelModal(false);
+  const handleRename = async ({ channelName }) => {
+    const params = {
+      id: renameId,
+    };
+    const data = {
+      attributes: { name: channelName },
+    };
+    await axios.patch(routes.channelPath(renameId), { data, params });
+    setShowRenameModal(false);
+  };
+
+  const handleCloseRenameModal = () => {
+    setShowRemoveModal(false);
     setRemoveError('');
   };
 
@@ -40,7 +55,7 @@ const Channels = (props) => {
     };
     try {
       await axios.delete(routes.channelPath(removeId), { params });
-      handleCloseRemoveChannelModal();
+      handleCloseRenameModal();
     } catch (e) {
       setRemoveError(e.message);
     }
@@ -50,7 +65,7 @@ const Channels = (props) => {
     <>
       <div className="d-flex mb-2">
         <span>Channels</span>
-        <Button onClick={() => setShowChannelNameModal(true)} variant="link" className="ml-auto p-0">+</Button>
+        <Button onClick={() => setShowAddModal(true)} variant="link" className="ml-auto p-0">+</Button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
         {channels.map(({ id, name, removable }) => {
@@ -64,13 +79,19 @@ const Channels = (props) => {
                     <Dropdown.Toggle className="flex-grow-0" variant={variant} />
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => {
-                        setShowRemoveChannelModal(true);
+                        setShowRemoveModal(true);
                         setRemoveId(id);
                       }}
                       >
                         Remove
                       </Dropdown.Item>
-                      <Dropdown.Item>Rename</Dropdown.Item>
+                      <Dropdown.Item onClick={() => {
+                        setShowRenameModal(true);
+                        setRenameId(id);
+                      }}
+                      >
+                        Rename
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </ButtonGroup>
                 </Dropdown>
@@ -85,7 +106,7 @@ const Channels = (props) => {
           );
         })}
       </ul>
-      <Modal show={showChannelNameModal} onHide={() => setShowChannelNameModal(false)}>
+      <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Add channel</Modal.Title>
         </Modal.Header>
@@ -93,19 +114,19 @@ const Channels = (props) => {
           <ChannelNameForm
             channelNames={channels.map((ch) => ch.name)}
             onSubmit={handleAdd}
-            onCancel={() => setShowChannelNameModal(false)}
+            onCancel={() => setShowAddModal(false)}
           />
         </Modal.Body>
       </Modal>
 
-      <Modal show={showRemoveChannelModal} onHide={handleCloseRemoveChannelModal}>
+      <Modal show={showRemoveModal} onHide={handleCloseRenameModal}>
         <Modal.Header closeButton>
           <Modal.Title>Remove channel</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Are you sure?
           <div className="d-flex justify-content-between">
-            <Button className="mr-2" variant="secondary" onClick={handleCloseRemoveChannelModal}>
+            <Button className="mr-2" variant="secondary" onClick={handleCloseRenameModal}>
               Cancel
             </Button>
             <Button variant="danger" onClick={handleRemove}>
@@ -113,6 +134,19 @@ const Channels = (props) => {
             </Button>
           </div>
           <Feedback className="d-block mb-2" type="invalid">{removeError}</Feedback>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showRenameModal} onHide={() => setShowRenameModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Rename channel</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ChannelNameForm
+            channelNames={channels.map((ch) => ch.name)}
+            onSubmit={handleRename}
+            onCancel={() => setShowRenameModal(false)}
+          />
         </Modal.Body>
       </Modal>
     </>

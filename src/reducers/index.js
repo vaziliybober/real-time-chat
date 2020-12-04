@@ -30,6 +30,13 @@ const channelsReducer = createReducer({ byId: [], allIds: [] }, {
       allIds: _.without(state.allIds, id),
     };
   },
+  [actions.renameChannel]: (state, { payload }) => {
+    const { channel } = payload;
+    return {
+      byId: { ...state.byId, [channel.id]: channel },
+      allIds: state.allIds,
+    };
+  },
 });
 
 const messagesReducer = createReducer({ byId: [], allIds: [] }, {

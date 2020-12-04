@@ -41,6 +41,10 @@ socket.on('removeChannel', (data) => {
   const { id } = data.data;
   store.dispatch(actions.removeChannel({ id }));
 });
+socket.on('renameChannel', (data) => {
+  const channel = data.data.attributes;
+  store.dispatch(actions.renameChannel({ channel }));
+});
 
 const getOrCreateUserName = () => {
   const cookieValue = Cookies.get().userName;

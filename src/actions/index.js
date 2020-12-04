@@ -5,6 +5,7 @@ const actions = {
   setChannels: createAction('CHANNELS_SET'),
   addChannel: createAction('CHANNEL_ADD'),
   removeChannel: createAction('CHANNEL_REMOVE'),
+  renameChannel: createAction('CHANNEL_RENAME'),
   setMessages: createAction('MESSAGES_SET'),
   addMessage: createAction('MESSAGE_ADD'),
 };
