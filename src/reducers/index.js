@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
+import _ from 'lodash';
 import actions from '../actions/index.js';
 
 const currentChannelIdReducer = createReducer(null, {
@@ -19,6 +20,13 @@ const channelsReducer = createReducer({ byId: [], allIds: [] }, {
     return {
       byId: { ...state.byId, [channel.id]: channel },
       allIds: [...state.allIds, channel.id],
+    };
+  },
+  [actions.removeChannel]: (state, { payload }) => {
+    const { id } = payload;
+    return {
+      byId: _.omit(state.byId, id),
+      allIds: _.without(state.allIds, id),
     };
   },
 });

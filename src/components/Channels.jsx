@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
+import axios from 'axios';
+import {
+  Button, ButtonGroup, Dropdown, Modal,
+} from 'react-bootstrap';
 import actions from '../actions/index.js';
+import routes from '../routes.js';
 import NewChannelModal from './NewChannelModal.jsx';
 
 const Channels = (props) => {
@@ -12,6 +16,20 @@ const Channels = (props) => {
   };
 
   const [showNewChannelModal, setShowNewChannelModal] = useState(false);
+  const [showRemoveChannelModal, setShowRemoveChannelModal] = useState(false);
+  const [removeId, setRemoveId] = useState();
+
+  const handleRemove = async () => {
+    const params = {
+      id: removeId,
+    };
+    try {
+      await axios.delete(routes.channelPath(removeId), { params });
+      setShowRemoveChannelModal(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <>
@@ -25,10 +43,22 @@ const Channels = (props) => {
           if (removable) {
             return (
               <li key={id} className="nav-item">
-                <ButtonGroup className="d-flex mb-2 dropdown">
-                  <Button className="nav-link text-left flex-grow-1" variant={variant} onClick={getSwitchHandler(id)}>{name}</Button>
-                  <Dropdown.Toggle className="flex-grow-0" variant={variant} />
-                </ButtonGroup>
+                <Dropdown>
+                  <ButtonGroup className="d-flex mb-2 dropdown">
+                    <Button className="nav-link text-left flex-grow-1" variant={variant} onClick={getSwitchHandler(id)}>{name}</Button>
+                    <Dropdown.Toggle className="flex-grow-0" variant={variant} />
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => {
+                        setShowRemoveChannelModal(true);
+                        setRemoveId(id);
+                      }}
+                      >
+                        Remove
+                      </Dropdown.Item>
+                      <Dropdown.Item>Rename</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </ButtonGroup>
+                </Dropdown>
               </li>
 
             );
@@ -44,6 +74,22 @@ const Channels = (props) => {
         show={showNewChannelModal}
         handleClose={() => setShowNewChannelModal(false)}
       />
+      <Modal show={showRemoveChannelModal} onHide={() => setShowRemoveChannelModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Remove channel</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure?
+          <div className="d-flex justify-content-between">
+            <Button className="mr-2" variant="secondary" onClick={() => setShowRemoveChannelModal(false)}>
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={handleRemove}>
+              Confirm
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };
