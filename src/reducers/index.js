@@ -5,6 +5,7 @@ import actions from '../actions/index.js';
 
 const currentChannelIdReducer = createReducer(null, {
   [actions.setCurrentChannelId]: (state, { payload }) => payload.id,
+  [actions.removeChannel]: () => 1, // FIXME: what if it's not 1?
 });
 
 const channelsReducer = createReducer({ byId: [], allIds: [] }, {
@@ -45,6 +46,14 @@ const messagesReducer = createReducer({ byId: [], allIds: [] }, {
     return {
       byId: { ...state.byId, [message.id]: message },
       allIds: [...state.allIds, message.id],
+    };
+  },
+
+  [actions.removeChannel]: (state, { payload }) => {
+    const { id: channelId } = payload;
+    return {
+      byId: _.omitBy(state.byId, (m) => m.channelId === channelId),
+      allIds: state.allIds.filter((id) => state.byId[id].channelId !== channelId),
     };
   },
 });
