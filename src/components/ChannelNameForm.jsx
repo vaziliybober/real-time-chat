@@ -57,7 +57,7 @@ const ChannelNameForm = (props) => {
         <Feedback className="d-block mb-2" type="invalid">{formik.errors.channelName}</Feedback>
         <div className="d-flex justify-content-end">
           <Button className="mr-2" variant="secondary" onClick={onCancel}>Cancel</Button>
-          <Button variant="primary" type="submit">Submit</Button>
+          <Button variant="primary" type="submit" disabled={formik.isSubmitting}>Submit</Button>
         </div>
       </FormGroup>
     </Form>

@@ -20,6 +20,7 @@ const Channels = (props) => {
 
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [removeId, setRemoveId] = useState();
+  const [removeSubmitting, setRemoveSubmitting] = useState(false);
   const [removeError, setRemoveError] = useState('');
 
   const [showRenameModal, setShowRenameModal] = useState(false);
@@ -53,12 +54,14 @@ const Channels = (props) => {
     const params = {
       id: removeId,
     };
+    setRemoveSubmitting(true);
     try {
       await axios.delete(routes.channelPath(removeId), { params });
       handleCloseRenameModal();
     } catch (e) {
       setRemoveError(e.message);
     }
+    setRemoveSubmitting(false);
   };
 
   return (
@@ -129,7 +132,7 @@ const Channels = (props) => {
             <Button className="mr-2" variant="secondary" onClick={handleCloseRenameModal}>
               Cancel
             </Button>
-            <Button variant="danger" onClick={handleRemove}>
+            <Button variant="danger" onClick={handleRemove} disabled={removeSubmitting}>
               Confirm
             </Button>
           </div>
