@@ -11,10 +11,13 @@ import { Provider } from 'react-redux';
 import Cookies from 'js-cookie';
 import faker from 'faker';
 import { io } from 'socket.io-client';
+import plugRollbar from './rollbar.js';
 import App from './components/App.jsx';
 import UserNameContext from './contexts/UserNameContext.js';
 import actions from './actions/index.js';
 import reducer from './reducers/index.js';
+
+plugRollbar(process.env.NODE_ENV || 'development');
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
