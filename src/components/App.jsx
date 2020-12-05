@@ -1,6 +1,6 @@
 import React from 'react';
 import Channels from './Channels';
-import ChatBox from './ChatBox';
+import MessageBox from './MessageBox';
 import MessageForm from './MessageForm';
 
 const App = () => (
@@ -8,9 +8,9 @@ const App = () => (
     <div className="col-3 border-right">
       <Channels />
     </div>
-    <ChatBox>
+    <MessageBox>
       <MessageForm />
-    </ChatBox>
+    </MessageBox>
   </div>
 );
 

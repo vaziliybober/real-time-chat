@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-const ChatBox = (props) => {
-  const chatBoxRef = useRef();
+const MessageBox = (props) => {
+  const MessageBoxRef = useRef();
   useEffect(() => {
-    const div = chatBoxRef.current;
+    const div = MessageBoxRef.current;
     div.scrollTop = div.scrollHeight - div.clientHeight;
   });
 
@@ -12,13 +12,11 @@ const ChatBox = (props) => {
   return (
     <div className="col h-100">
       <div className="d-flex flex-column h-100">
-        <div id="messages-box" ref={chatBoxRef} className="chat-messages overflow-auto mb-3">
+        <div id="messages-box" ref={MessageBoxRef} className="chat-messages overflow-auto mb-3">
           {messages.map((message) => (
             <div key={message.id}>
               <b>{message.userName}</b>
-              :
-              {' '}
-              {message.text}
+              {`: ${message.text}`}
             </div>
           ))}
         </div>
@@ -37,4 +35,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ChatBox);
+export default connect(mapStateToProps)(MessageBox);
