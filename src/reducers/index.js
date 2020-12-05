@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { createReducer } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import _ from 'lodash';
@@ -18,10 +20,8 @@ const channelsReducer = createReducer({ byId: [], allIds: [] }, {
   },
   [actions.addChannel]: (state, { payload }) => {
     const { channel } = payload;
-    return {
-      byId: { ...state.byId, [channel.id]: channel },
-      allIds: [...state.allIds, channel.id],
-    };
+    state.byId[channel.id] = channel;
+    state.allIds.push(channel.id);
   },
   [actions.removeChannel]: (state, { payload }) => {
     const { id } = payload;
@@ -32,10 +32,7 @@ const channelsReducer = createReducer({ byId: [], allIds: [] }, {
   },
   [actions.renameChannel]: (state, { payload }) => {
     const { channel } = payload;
-    return {
-      byId: { ...state.byId, [channel.id]: channel },
-      allIds: state.allIds,
-    };
+    state.byId[channel.id] = channel;
   },
 });
 
@@ -50,10 +47,8 @@ const messagesReducer = createReducer({ byId: [], allIds: [] }, {
 
   [actions.addMessage]: (state, { payload }) => {
     const { message } = payload;
-    return {
-      byId: { ...state.byId, [message.id]: message },
-      allIds: [...state.allIds, message.id],
-    };
+    state.byId[message.id] = message;
+    state.allIds.push(message.id);
   },
 
   [actions.removeChannel]: (state, { payload }) => {
