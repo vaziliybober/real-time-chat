@@ -1,7 +1,7 @@
 {
-  "name": "frontend_l4_chat_project",
+  "name": "@vaziliybober/real-time-chat",
   "version": "0.0.1",
-  "description": "",
+  "description": "A slack-like chat with channels",
   "main": "dist/index.js",
   "bin": {
     "slack": "dist/bin/slack.js"
@@ -21,9 +21,12 @@
     "type": "git",
     "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"
   },
-  "author": "Kirill Mokevnin",
+  "author": "Vasiliy Bobrov",
   "license": "ISC",
-  "homepage": "",
+  "bugs": {
+    "url": "https://github.com/vaziliybober/real-time-chat/issues"
+  },
+  "homepage": "https://github.com/vaziliybober/real-time-chat#readme",
   "dependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
