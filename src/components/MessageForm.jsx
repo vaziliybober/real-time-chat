@@ -10,11 +10,12 @@ import {
 } from 'react-bootstrap';
 import Feedback from 'react-bootstrap/esm/Feedback';
 import routes from '../routes.js';
-import actions from '../actions/index.js';
-import UserNameContext from '../contexts/UserNameContext.js';
+import { actions } from '../slices/index.js';
+import AppContext from '../contexts/AppContext.js';
 
 const MessageForm = (props) => {
-  const userName = useContext(UserNameContext);
+  const { userName } = useContext(AppContext);
+  console.log(userName);
 
   const formik = useFormik({
     initialValues: {
@@ -74,9 +75,12 @@ const MessageForm = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  currentChannelId: state.currentChannelId,
-});
+const mapStateToProps = (state) => {
+  const { channels: { currentId } } = state;
+  return {
+    currentChannelId: currentId,
+  };
+};
 
 const mapDispatchToProps = {
   createMessage: actions.createMessage,

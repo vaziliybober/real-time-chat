@@ -13,9 +13,8 @@ import faker from 'faker';
 import { io } from 'socket.io-client';
 import plugRollbar from './rollbar.js';
 import App from './components/App.jsx';
-import UserNameContext from './contexts/UserNameContext.js';
-import actions from './actions/index.js';
-import reducer from './reducers/index.js';
+import AppContext from './contexts/AppContext.js';
+import reducer, { actions } from './slices/index.js';
 
 plugRollbar(process.env.NODE_ENV || 'development');
 
@@ -26,10 +25,6 @@ if (process.env.NODE_ENV !== 'production') {
 const store = configureStore({
   reducer,
 });
-
-store.dispatch(actions.setChannels({ channels: gon.channels }));
-store.dispatch(actions.setMessages({ messages: gon.messages }));
-store.dispatch(actions.setCurrentChannelId({ id: gon.channels[0].id }));
 
 const socket = io();
 socket.on('newMessage', (data) => {
@@ -60,13 +55,20 @@ const getOrCreateUserName = () => {
   return cookieValue;
 };
 
-const userName = getOrCreateUserName();
+const generalChannelId = gon.channels[0].id;
+store.dispatch(actions.setChannels({ channels: gon.channels, currentId: generalChannelId }));
+store.dispatch(actions.setMessages({ messages: gon.messages }));
+
+const appContextValue = {
+  userName: getOrCreateUserName(),
+  generalChannelId,
+};
 
 ReactDOM.render(
   <Provider store={store}>
-    <UserNameContext.Provider value={userName}>
+    <AppContext.Provider value={appContextValue}>
       <App />
-    </UserNameContext.Provider>
+    </AppContext.Provider>
   </Provider>,
   document.getElementById('chat'),
 );

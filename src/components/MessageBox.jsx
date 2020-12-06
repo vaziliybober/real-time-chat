@@ -29,9 +29,9 @@ const MessageBox = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const { currentChannelId, messages: { allIds, byId } } = state;
+  const { channels: { currentId }, messages: { allIds, byId } } = state;
   return {
-    messages: allIds.map((id) => byId[id]).filter((m) => m.channelId === currentChannelId),
+    messages: allIds.map((id) => byId[id]).filter((m) => m.channelId === currentId),
   };
 };
 
