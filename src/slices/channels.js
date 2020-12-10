@@ -7,14 +7,6 @@ const slice = createSlice({
   name: 'channels',
   initialState: { byId: [], allIds: [], currentId: null },
   reducers: {
-    setChannels: (state, { payload }) => {
-      const { channels, currentId } = payload;
-      return {
-        byId: Object.fromEntries(channels.map((channel) => [channel.id, channel])),
-        allIds: channels.map((channel) => channel.id),
-        currentId,
-      };
-    },
     setCurrentChannelId: (state, { payload }) => {
       state.currentId = payload.id;
     },

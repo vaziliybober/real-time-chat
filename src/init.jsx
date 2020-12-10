@@ -22,8 +22,20 @@ export default () => {
     localStorage.debug = 'chat:*';
   }
 
+  const generalChannelId = gon.channels[0].id;
   const store = configureStore({
     reducer,
+    preloadedState: {
+      channels: {
+        byId: Object.fromEntries(gon.channels.map((ch) => [ch.id, ch])),
+        allIds: gon.channels.map((ch) => ch.id),
+        currentId: generalChannelId,
+      },
+      messages: {
+        byId: Object.fromEntries(gon.messages.map((m) => [m.id, m])),
+        allIds: gon.messages.map((m) => m.id),
+      },
+    },
   });
 
   const socket = io();
@@ -54,10 +66,6 @@ export default () => {
 
     return cookieValue;
   };
-
-  const generalChannelId = gon.channels[0].id;
-  store.dispatch(actions.setChannels({ channels: gon.channels, currentId: generalChannelId }));
-  store.dispatch(actions.setMessages({ messages: gon.messages }));
 
   const appContextValue = {
     userName: getOrCreateUserName(),

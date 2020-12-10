@@ -8,14 +8,6 @@ const slice = createSlice({
   name: 'messages',
   initialState: { byId: [], allIds: [] },
   reducers: {
-    setMessages: (state, { payload }) => {
-      const { messages } = payload;
-      return {
-        byId: Object.fromEntries(messages.map((message) => [message.id, message])),
-        allIds: messages.map((message) => message.id),
-      };
-    },
-
     addMessage: (state, { payload }) => {
       const { message } = payload;
       state.byId[message.id] = message;
