@@ -15,7 +15,6 @@ import AppContext from '../contexts/AppContext.js';
 
 const MessageForm = (props) => {
   const { userName } = useContext(AppContext);
-  console.log(userName);
 
   const formik = useFormik({
     initialValues: {
