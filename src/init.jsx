@@ -67,6 +67,15 @@ export default () => {
     return cookieValue;
   };
 
+  // I think this part is imperative by nature
+  /* eslint-disable functional/no-let */
+  let { userName } = Cookies.get();
+  if (!userName) {
+    userName = faker.name.findName();
+    Cookies.set('userName', userName);
+  }
+  /* eslint-enable functional/no-let */
+
   const appContextValue = {
     userName: getOrCreateUserName(),
     generalChannelId,
