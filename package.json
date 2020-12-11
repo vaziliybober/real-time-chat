@@ -84,6 +84,7 @@
     "nodemon": "^2.0.6",
     "postcss-loader": "^4.1.0",
     "postcss-preset-env": "^6.7.0",
+    "rollbar": "^2.19.4",
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0",
     "webpack": "^5.9.0",

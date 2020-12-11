@@ -8,15 +8,22 @@ import React from 'react';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import Cookies from 'js-cookie';
+import Rollbar from 'rollbar';
 import faker from 'faker';
 import { io } from 'socket.io-client';
-import plugRollbar from './rollbar.js';
 import App from './components/App.jsx';
 import AppContext from './contexts/AppContext.js';
 import reducer, { actions } from './slices/index.js';
 
 export default () => {
-  plugRollbar(process.env.NODE_ENV || 'development');
+  new Rollbar({
+    accessToken: "9fd42b56bd4e4003aebf42e15e27d794",
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    payload: {
+        environment: process.env.NODE_ENV || 'development'
+    }
+  });
 
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
