@@ -12,18 +12,20 @@ import Rollbar from 'rollbar';
 import faker from 'faker';
 import { io } from 'socket.io-client';
 import App from './components/App.jsx';
-import AppContext from './contexts/AppContext.js';
+import UserNameContext from './contexts/UserNameContext.js';
 import reducer, { actions } from './slices/index.js';
 
 export default () => {
+  /* eslint-disable no-new */
   new Rollbar({
-    accessToken: "9fd42b56bd4e4003aebf42e15e27d794",
+    accessToken: '9fd42b56bd4e4003aebf42e15e27d794',
     captureUncaught: true,
     captureUnhandledRejections: true,
     payload: {
-        environment: process.env.NODE_ENV || 'development'
-    }
+      environment: process.env.NODE_ENV || 'development',
+    },
   });
+  /* eslint-enable no-new */
 
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
@@ -36,6 +38,7 @@ export default () => {
       channels: {
         byId: Object.fromEntries(gon.channels.map((ch) => [ch.id, ch])),
         allIds: gon.channels.map((ch) => ch.id),
+        defaultId: generalChannelId,
         currentId: generalChannelId,
       },
       messages: {
@@ -63,17 +66,6 @@ export default () => {
     store.dispatch(actions.renameChannel({ channel }));
   });
 
-  const getOrCreateUserName = () => {
-    const cookieValue = Cookies.get().userName;
-    if (!cookieValue) {
-      const userName = faker.name.findName();
-      Cookies.set('userName', userName);
-      return userName;
-    }
-
-    return cookieValue;
-  };
-
   // I think this part is imperative by nature
   /* eslint-disable functional/no-let */
   let { userName } = Cookies.get();
@@ -83,16 +75,11 @@ export default () => {
   }
   /* eslint-enable functional/no-let */
 
-  const appContextValue = {
-    userName: getOrCreateUserName(),
-    generalChannelId,
-  };
-
   ReactDOM.render(
     <Provider store={store}>
-      <AppContext.Provider value={appContextValue}>
+      <UserNameContext.Provider value={userName}>
         <App />
-      </AppContext.Provider>
+      </UserNameContext.Provider>
     </Provider>,
     document.getElementById('chat'),
   );

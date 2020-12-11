@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import {
@@ -8,11 +8,11 @@ import Feedback from 'react-bootstrap/esm/Feedback';
 import { actions } from '../slices/index.js';
 import routes from '../routes.js';
 import ChannelNameForm from './ChannelNameForm.jsx';
-import AppContext from '../contexts/AppContext.js';
 
 const Channels = (props) => {
-  const { channels, currentChannelId, setCurrentChannelId } = props;
-  const { generalChannelId } = useContext(AppContext);
+  const {
+    channels, defaultChannelId, currentChannelId, setCurrentChannelId,
+  } = props;
 
   const getSwitchHandler = (id) => () => {
     setCurrentChannelId({ id });
@@ -61,7 +61,7 @@ const Channels = (props) => {
       await axios.delete(routes.channelPath(removeId), { params });
       handleCloseRenameModal();
       if (removeId === currentChannelId) {
-        setCurrentChannelId({ id: generalChannelId });
+        setCurrentChannelId({ id: defaultChannelId });
       }
     } catch (e) {
       setRemoveError(e.message);
@@ -162,8 +162,13 @@ const Channels = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const { channels: { allIds, byId, currentId } } = state;
+  const {
+    channels: {
+      allIds, byId, currentId, defaultId,
+    },
+  } = state;
   return {
+    defaultChannelId: defaultId,
     currentChannelId: currentId,
     channels: allIds.map((id) => byId[id]),
   };

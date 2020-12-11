@@ -11,10 +11,10 @@ import {
 import Feedback from 'react-bootstrap/esm/Feedback';
 import routes from '../routes.js';
 import { actions } from '../slices/index.js';
-import AppContext from '../contexts/AppContext.js';
+import UserNameContext from '../contexts/UserNameContext.js';
 
 const MessageForm = (props) => {
-  const { userName } = useContext(AppContext);
+  const { userName } = useContext(UserNameContext);
 
   const formik = useFormik({
     initialValues: {

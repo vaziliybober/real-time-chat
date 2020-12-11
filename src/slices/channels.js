@@ -5,7 +5,9 @@ import _ from 'lodash';
 
 const slice = createSlice({
   name: 'channels',
-  initialState: { byId: [], allIds: [], currentId: null },
+  initialState: {
+    byId: [], allIds: [], currentId: null, defaultId: null,
+  },
   reducers: {
     setCurrentChannelId: (state, { payload }) => {
       state.currentId = payload.id;
@@ -20,7 +22,8 @@ const slice = createSlice({
       return {
         byId: _.omit(state.byId, id),
         allIds: _.without(state.allIds, id),
-        currentId: id === state.currentId ? null : state.currentId,
+        currentId: id === state.currentId ? state.defaultId : state.currentId,
+        defaultId: state.defaultId,
       };
     },
     renameChannel: (state, { payload }) => {
