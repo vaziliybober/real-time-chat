@@ -11,3 +11,12 @@ This is the lvl-4 frontend project on https://ru.hexlet.io/
 ## Link
 
 https://vaziliybober-real-time-chat.herokuapp.com/
+
+## Clone
+
+```
+git clone git@github.com:vaziliybober/real-time-chat.git
+cd real-time-chat
+make install
+make start
+```
