@@ -60,6 +60,7 @@
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "regenerator-runtime": "^0.13.7",
+    "reselect": "^4.0.0",
     "rollbar": "^2.19.4",
     "socket.io": "^3.0.3",
     "socket.io-client": "^3.0.3"

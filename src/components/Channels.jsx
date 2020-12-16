@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import axios from 'axios';
 import {
   Button, ButtonGroup, Dropdown, Modal,
 } from 'react-bootstrap';
 import Feedback from 'react-bootstrap/esm/Feedback';
-import { actions } from '../slices/index.js';
+
+import useChannels from '../hooks/useChannels.js';
 import routes from '../routes.js';
 import ChannelNameForm from './ChannelNameForm.jsx';
 
-const Channels = (props) => {
-  const {
-    channels, defaultChannelId, currentChannelId, setCurrentChannelId,
-  } = props;
+const Channels = () => {
+  const [
+    { channels, defaultChannelId, currentChannelId },
+    { setCurrentChannelId },
+  ] = useChannels();
 
   const getSwitchHandler = (id) => () => {
-    setCurrentChannelId({ id });
+    setCurrentChannelId(id);
   };
 
   const [showAddModal, setShowAddModal] = useState(false);
@@ -61,7 +62,7 @@ const Channels = (props) => {
       await axios.delete(routes.channelPath(removeId), { params });
       handleCloseRenameModal();
       if (removeId === currentChannelId) {
-        setCurrentChannelId({ id: defaultChannelId });
+        setCurrentChannelId(defaultChannelId);
       }
     } catch (e) {
       setRemoveError(e.message);
@@ -161,21 +162,4 @@ const Channels = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const {
-    channels: {
-      allIds, byId, currentId, defaultId,
-    },
-  } = state;
-  return {
-    defaultChannelId: defaultId,
-    currentChannelId: currentId,
-    channels: allIds.map((id) => byId[id]),
-  };
-};
-
-const mapDispatchToProps = {
-  setCurrentChannelId: actions.setCurrentChannelId,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Channels);
+export default Channels;
