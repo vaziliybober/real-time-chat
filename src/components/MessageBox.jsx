@@ -1,14 +1,19 @@
 import React, { useRef, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const MessageBox = (props) => {
+  const { children } = props;
+  const messages = useSelector((state) => {
+    const { channels: { currentId }, messages: { allIds, byId } } = state;
+    return allIds.map((id) => byId[id]).filter((m) => m.channelId === currentId);
+  });
+
   const MessageBoxRef = useRef();
   useEffect(() => {
     const div = MessageBoxRef.current;
     div.scrollTop = div.scrollHeight - div.clientHeight;
   });
 
-  const { messages, children } = props;
   return (
     <div className="col h-100">
       <div className="d-flex flex-column h-100">
@@ -28,11 +33,4 @@ const MessageBox = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const { channels: { currentId }, messages: { allIds, byId } } = state;
-  return {
-    messages: allIds.map((id) => byId[id]).filter((m) => m.channelId === currentId),
-  };
-};
-
-export default connect(mapStateToProps)(MessageBox);
+export default MessageBox;
