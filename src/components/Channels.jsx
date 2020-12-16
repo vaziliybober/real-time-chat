@@ -3,16 +3,16 @@ import axios from 'axios';
 import {
   Button, ButtonGroup, Dropdown, Modal,
 } from 'react-bootstrap';
-import Feedback from 'react-bootstrap/esm/Feedback';
 
 import useChannels from '../hooks/useChannels.js';
 import routes from '../routes.js';
 import ChannelNameForm from './ChannelNameForm.jsx';
-import AddModal from './AddModal';
+import AddModal from './AddModal.jsx';
+import RemoveModal from './RemoveModal.jsx';
 
 const Channels = () => {
   const [
-    { channels, defaultChannelId, currentChannelId },
+    { channels, currentChannelId },
     { setCurrentChannelId },
   ] = useChannels();
 
@@ -24,8 +24,6 @@ const Channels = () => {
 
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [removeId, setRemoveId] = useState();
-  const [removeSubmitting, setRemoveSubmitting] = useState(false);
-  const [removeError, setRemoveError] = useState('');
 
   const [showRenameModal, setShowRenameModal] = useState(false);
   const [renameId, setRenameId] = useState();
@@ -39,28 +37,6 @@ const Channels = () => {
     };
     await axios.patch(routes.channelPath(renameId), { data, params });
     setShowRenameModal(false);
-  };
-
-  const handleCloseRenameModal = () => {
-    setShowRemoveModal(false);
-    setRemoveError('');
-  };
-
-  const handleRemove = async () => {
-    const params = {
-      id: removeId,
-    };
-    setRemoveSubmitting(true);
-    try {
-      await axios.delete(routes.channelPath(removeId), { params });
-      handleCloseRenameModal();
-      if (removeId === currentChannelId) {
-        setCurrentChannelId(defaultChannelId);
-      }
-    } catch (e) {
-      setRemoveError(e.message);
-    }
-    setRemoveSubmitting(false);
   };
 
   return (
@@ -109,24 +85,11 @@ const Channels = () => {
         })}
       </ul>
       <AddModal show={showAddModal} onClose={() => setShowAddModal(false)} />
-
-      <Modal show={showRemoveModal} onHide={handleCloseRenameModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Remove channel</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Are you sure?
-          <div className="d-flex justify-content-between">
-            <Button className="mr-2" variant="secondary" onClick={handleCloseRenameModal}>
-              Cancel
-            </Button>
-            <Button variant="danger" onClick={handleRemove} disabled={removeSubmitting}>
-              Confirm
-            </Button>
-          </div>
-          <Feedback className="d-block mb-2" type="invalid">{removeError}</Feedback>
-        </Modal.Body>
-      </Modal>
+      <RemoveModal
+        show={showRemoveModal}
+        onClose={() => setShowRemoveModal(false)}
+        removeId={removeId}
+      />
 
       <Modal show={showRenameModal} onHide={() => setShowRenameModal(false)}>
         <Modal.Header closeButton>
