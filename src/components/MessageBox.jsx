@@ -1,12 +1,10 @@
 import React, { useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+
+import useMessages from '../hooks/useMessages.js';
 
 const MessageBox = (props) => {
   const { children } = props;
-  const messages = useSelector((state) => {
-    const { channels: { currentId }, messages: { allIds, byId } } = state;
-    return allIds.map((id) => byId[id]).filter((m) => m.channelId === currentId);
-  });
+  const [messages] = useMessages();
 
   const MessageBoxRef = useRef();
   useEffect(() => {
