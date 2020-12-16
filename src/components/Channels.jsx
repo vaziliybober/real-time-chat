@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import {
-  Button, ButtonGroup, Dropdown, Modal,
+  Button, ButtonGroup, Dropdown,
 } from 'react-bootstrap';
 
 import useChannels from '../hooks/useChannels.js';
-import routes from '../routes.js';
-import ChannelNameForm from './ChannelNameForm.jsx';
 import AddModal from './AddModal.jsx';
 import RemoveModal from './RemoveModal.jsx';
+import RenameModal from './RenameModal.jsx';
 
 const Channels = () => {
   const [
@@ -27,17 +25,6 @@ const Channels = () => {
 
   const [showRenameModal, setShowRenameModal] = useState(false);
   const [renameId, setRenameId] = useState();
-
-  const handleRename = async ({ channelName }) => {
-    const params = {
-      id: renameId,
-    };
-    const data = {
-      attributes: { name: channelName },
-    };
-    await axios.patch(routes.channelPath(renameId), { data, params });
-    setShowRenameModal(false);
-  };
 
   return (
     <>
@@ -90,19 +77,11 @@ const Channels = () => {
         onClose={() => setShowRemoveModal(false)}
         removeId={removeId}
       />
-
-      <Modal show={showRenameModal} onHide={() => setShowRenameModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Rename channel</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ChannelNameForm
-            channelNames={channels.map((ch) => ch.name)}
-            onSubmit={handleRename}
-            onCancel={() => setShowRenameModal(false)}
-          />
-        </Modal.Body>
-      </Modal>
+      <RenameModal
+        show={showRenameModal}
+        onClose={() => setShowRenameModal(false)}
+        renameId={renameId}
+      />
     </>
   );
 };
