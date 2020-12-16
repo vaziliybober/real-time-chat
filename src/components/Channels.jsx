@@ -8,6 +8,7 @@ import Feedback from 'react-bootstrap/esm/Feedback';
 import useChannels from '../hooks/useChannels.js';
 import routes from '../routes.js';
 import ChannelNameForm from './ChannelNameForm.jsx';
+import AddModal from './AddModal';
 
 const Channels = () => {
   const [
@@ -28,14 +29,6 @@ const Channels = () => {
 
   const [showRenameModal, setShowRenameModal] = useState(false);
   const [renameId, setRenameId] = useState();
-
-  const handleAdd = async ({ channelName }) => {
-    const data = {
-      attributes: { name: channelName },
-    };
-    await axios.post(routes.channelsPath(), { data });
-    setShowAddModal(false);
-  };
 
   const handleRename = async ({ channelName }) => {
     const params = {
@@ -115,18 +108,7 @@ const Channels = () => {
           );
         })}
       </ul>
-      <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add channel</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ChannelNameForm
-            channelNames={channels.map((ch) => ch.name)}
-            onSubmit={handleAdd}
-            onCancel={() => setShowAddModal(false)}
-          />
-        </Modal.Body>
-      </Modal>
+      <AddModal show={showAddModal} onClose={() => setShowAddModal(false)} />
 
       <Modal show={showRemoveModal} onHide={handleCloseRenameModal}>
         <Modal.Header closeButton>
