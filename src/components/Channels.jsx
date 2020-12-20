@@ -41,7 +41,7 @@ const Channels = () => {
                 <Dropdown>
                   <ButtonGroup className="d-flex mb-2 dropdown">
                     <Button className="nav-link text-left flex-grow-1" variant={variant} onClick={getSwitchHandler(id)}>{name}</Button>
-                    <Dropdown.Toggle className="flex-grow-0" variant={variant} />
+                    <Dropdown.Toggle aria-label="dropdown" className="flex-grow-0" variant={variant} />
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => {
                         setShowRemoveModal(true);

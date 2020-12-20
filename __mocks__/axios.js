@@ -2,9 +2,10 @@
 let app;
 /* eslint-enable functional/no-let */
 
-const makeMock = (method) => (url, { data }) => {
+const makeMock = (method) => (url, { data, params }) => {
   const payload = {
     data,
+    params,
   };
 
   return app.inject({

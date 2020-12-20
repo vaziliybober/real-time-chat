@@ -52,11 +52,11 @@ const ChannelNameForm = (props) => {
   return (
     <Form onSubmit={formik.handleSubmit}>
       <FormGroup>
-        <FormControl name="channelName" ref={inputRef} onChange={formik.handleChange} className={inputClasses} value={formik.values.channelName} />
+        <FormControl aria-label="channelName" name="channelName" ref={inputRef} onChange={formik.handleChange} className={inputClasses} value={formik.values.channelName} />
         <FormControl.Feedback className="d-block mb-2" type="invalid">{formik.errors.channelName}</FormControl.Feedback>
         <div className="d-flex justify-content-end">
           <Button className="mr-2" variant="secondary" onClick={onCancel}>Cancel</Button>
-          <Button variant="primary" type="submit" disabled={formik.isSubmitting}>Submit</Button>
+          <Button variant="primary" type="submit" disabled={formik.isSubmitting || !!formik.errors.channelName}>Submit</Button>
         </div>
       </FormGroup>
     </Form>
