@@ -8,13 +8,13 @@ import axios from 'axios';
 import {
   Form, FormGroup, InputGroup, FormControl, Button,
 } from 'react-bootstrap';
-import Feedback from 'react-bootstrap/esm/Feedback';
+
 import routes from '../routes.js';
 import { actions } from '../slices/index.js';
 import UserNameContext from '../contexts/UserNameContext.js';
 
 const MessageForm = (props) => {
-  const { userName } = useContext(UserNameContext);
+  const userName = useContext(UserNameContext);
 
   const formik = useFormik({
     initialValues: {
@@ -67,7 +67,7 @@ const MessageForm = (props) => {
             disabled={formik.isSubmitting}
           />
           <Button aria-label="submit" type="submit" disabled={formik.isSubmitting}>Submit</Button>
-          <Feedback className="d-block" type="invalid">{formik.errors.message}</Feedback>
+          <FormControl.Feedback className="d-block" type="invalid">{formik.errors.message}</FormControl.Feedback>
         </InputGroup>
       </FormGroup>
     </Form>

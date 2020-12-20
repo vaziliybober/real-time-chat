@@ -24,7 +24,7 @@ module.exports = {
     publicPath: '/assets/',
     compress: true,
     watchOptions: {
-      ignored: '**/node_modules/**'
+      ignored: '**/node_modules/**',
     },
   },
   plugins: [

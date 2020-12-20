@@ -1,9 +1,6 @@
 import 'regenerator-runtime/runtime';
 
-import '../assets/application.scss';
-
 import gon from 'gon';
-import ReactDOM from 'react-dom';
 import React from 'react';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
@@ -75,12 +72,11 @@ export default () => {
   }
   /* eslint-enable functional/no-let */
 
-  ReactDOM.render(
+  return (
     <Provider store={store}>
       <UserNameContext.Provider value={userName}>
         <App />
       </UserNameContext.Provider>
-    </Provider>,
-    document.getElementById('chat'),
+    </Provider>
   );
 };

@@ -4,7 +4,6 @@ import {
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import cn from 'classnames';
-import Feedback from 'react-bootstrap/esm/Feedback';
 
 const ChannelNameForm = (props) => {
   const { onSubmit, onCancel } = props;
@@ -54,7 +53,7 @@ const ChannelNameForm = (props) => {
     <Form onSubmit={formik.handleSubmit}>
       <FormGroup>
         <FormControl name="channelName" ref={inputRef} onChange={formik.handleChange} className={inputClasses} value={formik.values.channelName} />
-        <Feedback className="d-block mb-2" type="invalid">{formik.errors.channelName}</Feedback>
+        <FormControl.Feedback className="d-block mb-2" type="invalid">{formik.errors.channelName}</FormControl.Feedback>
         <div className="d-flex justify-content-end">
           <Button className="mr-2" variant="secondary" onClick={onCancel}>Cancel</Button>
           <Button variant="primary" type="submit" disabled={formik.isSubmitting}>Submit</Button>

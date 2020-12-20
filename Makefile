@@ -18,14 +18,17 @@ build:
 test:
 	npm test -s
 
+ftest:
+	npm run ftest -s
+
 test-coverage:
 	npm test -- --coverage --coverageProvider=v8
 
 lint:
-	npx eslint src/ --ext js,jsx
+	npx eslint . --ext js,jsx
 
 lint-fix:
-	npx eslint src/ --fix --ext js,jsx
+	npx eslint . --fix --ext js,jsx
 
 publish:
 	npm publish

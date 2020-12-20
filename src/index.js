@@ -1,3 +1,6 @@
-import runApp from './init.jsx';
+import ReactDOM from 'react-dom';
 
-runApp();
+import '../assets/application.scss';
+import createApp from './createApp.jsx';
+
+ReactDOM.render(createApp(), document.getElementById('chat'));

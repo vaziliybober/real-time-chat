@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import Feedback from 'react-bootstrap/esm/Feedback';
+import { Modal, Button, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 
 import routes from '../routes.js';
@@ -49,7 +48,7 @@ const RemoveModal = (props) => {
             Confirm
           </Button>
         </div>
-        <Feedback className="d-block mb-2" type="invalid">{removeError}</Feedback>
+        <FormControl.Feedback className="d-block mb-2" type="invalid">{removeError}</FormControl.Feedback>
       </Modal.Body>
     </Modal>
   );
