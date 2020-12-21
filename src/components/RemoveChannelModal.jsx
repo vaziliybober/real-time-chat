@@ -5,7 +5,7 @@ import axios from 'axios';
 import routes from '../routes.js';
 import useChannels from '../hooks/useChannels.js';
 
-const RemoveModal = (props) => {
+const RemoveChannelModal = (props) => {
   const { show, onClose, args: { removeId } } = props;
   const [{ currentChannelId, defaultChannelId }, { setCurrentChannelId }] = useChannels();
   const [removeSubmitting, setRemoveSubmitting] = useState(false);
@@ -54,4 +54,4 @@ const RemoveModal = (props) => {
   );
 };
 
-export default RemoveModal;
+export default RemoveChannelModal;

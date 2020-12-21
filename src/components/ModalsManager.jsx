@@ -1,8 +1,8 @@
 import React from 'react';
 
-import AddModal from './AddModal.jsx';
-import RemoveModal from './RemoveModal.jsx';
-import RenameModal from './RenameModal.jsx';
+import AddChannelModal from './AddChannelModal.jsx';
+import RemoveChannelModal from './RemoveChannelModal.jsx';
+import RenameChannelModal from './RenameChannelModal.jsx';
 import useModals from '../hooks/useModals.js';
 
 const ModalsManager = () => {
@@ -10,9 +10,9 @@ const ModalsManager = () => {
 
   return (
     <>
-      <AddModal show={name === 'addChannelModal'} onClose={closeModal} args={args} />
-      <RemoveModal show={name === 'removeChannelModal'} onClose={closeModal} args={args} />
-      <RenameModal show={name === 'renameChannelModal'} onClose={closeModal} args={args} />
+      <AddChannelModal show={name === 'addChannelModal'} onClose={closeModal} args={args} />
+      <RemoveChannelModal show={name === 'removeChannelModal'} onClose={closeModal} args={args} />
+      <RenameChannelModal show={name === 'renameChannelModal'} onClose={closeModal} args={args} />
     </>
   );
 };
