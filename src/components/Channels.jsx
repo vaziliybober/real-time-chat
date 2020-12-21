@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Button, ButtonGroup, Dropdown,
 } from 'react-bootstrap';
 
 import useChannels from '../hooks/useChannels.js';
-import AddModal from './AddModal.jsx';
-import RemoveModal from './RemoveModal.jsx';
-import RenameModal from './RenameModal.jsx';
+import useModals from '../hooks/useModals.js';
 
 const Channels = () => {
   const [
@@ -14,23 +12,21 @@ const Channels = () => {
     { setCurrentChannelId },
   ] = useChannels();
 
+  const [, , {
+    showAddChannelsModal,
+    showRemoveChannelsModal,
+    showRenameChannelsModal,
+  }] = useModals();
+
   const getSwitchHandler = (id) => () => {
     setCurrentChannelId(id);
   };
-
-  const [showAddModal, setShowAddModal] = useState(false);
-
-  const [showRemoveModal, setShowRemoveModal] = useState(false);
-  const [removeId, setRemoveId] = useState();
-
-  const [showRenameModal, setShowRenameModal] = useState(false);
-  const [renameId, setRenameId] = useState();
 
   return (
     <>
       <div className="d-flex mb-2">
         <span>Channels</span>
-        <Button onClick={() => setShowAddModal(true)} variant="link" className="ml-auto p-0">+</Button>
+        <Button onClick={showAddChannelsModal} variant="link" className="ml-auto p-0">+</Button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
         {channels.map(({ id, name, removable }) => {
@@ -44,15 +40,13 @@ const Channels = () => {
                     <Dropdown.Toggle aria-label="dropdown" className="flex-grow-0" variant={variant} />
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => {
-                        setShowRemoveModal(true);
-                        setRemoveId(id);
+                        showRemoveChannelsModal(id);
                       }}
                       >
                         Remove
                       </Dropdown.Item>
                       <Dropdown.Item onClick={() => {
-                        setShowRenameModal(true);
-                        setRenameId(id);
+                        showRenameChannelsModal(id);
                       }}
                       >
                         Rename
@@ -71,17 +65,6 @@ const Channels = () => {
           );
         })}
       </ul>
-      <AddModal show={showAddModal} onClose={() => setShowAddModal(false)} />
-      <RemoveModal
-        show={showRemoveModal}
-        onClose={() => setShowRemoveModal(false)}
-        removeId={removeId}
-      />
-      <RenameModal
-        show={showRenameModal}
-        onClose={() => setShowRenameModal(false)}
-        renameId={renameId}
-      />
     </>
   );
 };

@@ -7,7 +7,7 @@ import ChannelNameForm from './ChannelNameForm.jsx';
 import useChannels from '../hooks/useChannels.js';
 
 const RenameModal = (props) => {
-  const { show, onClose, renameId } = props;
+  const { show, onClose, args: { renameId } } = props;
   const [{ channels }] = useChannels();
 
   const handleRename = async ({ channelName }) => {

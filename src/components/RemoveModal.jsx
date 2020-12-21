@@ -6,7 +6,7 @@ import routes from '../routes.js';
 import useChannels from '../hooks/useChannels.js';
 
 const RemoveModal = (props) => {
-  const { show, onClose, removeId } = props;
+  const { show, onClose, args: { removeId } } = props;
   const [{ currentChannelId, defaultChannelId }, { setCurrentChannelId }] = useChannels();
   const [removeSubmitting, setRemoveSubmitting] = useState(false);
   const [removeError, setRemoveError] = useState('');
