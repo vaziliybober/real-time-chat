@@ -3,31 +3,30 @@ import {
   Button, Form, FormGroup, FormControl,
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import cn from 'classnames';
 
 const ChannelNameForm = (props) => {
-  const { onSubmit, onCancel } = props;
+  const { onSubmit, onCancel, channelNames } = props;
 
-  const validate = ({ channelName }) => {
-    const { channelNames } = props;
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.focus();
+  });
 
-    const errors = {};
-    if (channelName.length === 0) {
-      errors.channelName = 'Required';
-    } else if (channelName.length < 3 || channelName.length > 20) {
-      errors.channelName = 'Must be 3 to 20 characters';
-    } else if (channelNames.includes(channelName)) {
-      errors.channelName = 'Must be unique';
-    }
-
-    return errors;
-  };
+  const schema = yup.object().shape({
+    channelName: yup.string()
+      .min(3, 'Must be 3 to 20 characters')
+      .max(20, 'Must be 3 to 20 characters')
+      .required('Required')
+      .test('unique', 'Must be unique', (value) => !channelNames.includes(value)),
+  });
 
   const formik = useFormik({
     initialValues: {
       channelName: '',
     },
-    validate,
+    validationSchema: schema,
     validateOnChange: true,
     onSubmit: async ({ channelName }) => {
       try {
@@ -38,11 +37,6 @@ const ChannelNameForm = (props) => {
         });
       }
     },
-  });
-
-  const inputRef = useRef();
-  useEffect(() => {
-    inputRef.current.focus();
   });
 
   const inputClasses = cn('mb-2', {
