@@ -27,9 +27,7 @@ module.exports = {
       ignored: '**/node_modules/**',
     },
   },
-  plugins: [
-    new MiniCssExtractPlugin(),
-  ],
+  plugins: [new MiniCssExtractPlugin()],
   module: {
     rules: [
       {

@@ -10,9 +10,21 @@ const ModalsManager = () => {
 
   return (
     <>
-      <AddChannelModal show={name === 'addChannelModal'} onClose={closeModal} args={args} />
-      <RemoveChannelModal show={name === 'removeChannelModal'} onClose={closeModal} args={args} />
-      <RenameChannelModal show={name === 'renameChannelModal'} onClose={closeModal} args={args} />
+      <AddChannelModal
+        show={name === 'addChannelModal'}
+        onClose={closeModal}
+        args={args}
+      />
+      <RemoveChannelModal
+        show={name === 'removeChannelModal'}
+        onClose={closeModal}
+        args={args}
+      />
+      <RenameChannelModal
+        show={name === 'renameChannelModal'}
+        onClose={closeModal}
+        args={args}
+      />
     </>
   );
 };

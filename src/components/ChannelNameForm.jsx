@@ -1,7 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import {
-  Button, Form, FormGroup, FormControl,
-} from 'react-bootstrap';
+import { Button, Form, FormGroup, FormControl } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import cn from 'classnames';
@@ -15,11 +13,16 @@ const ChannelNameForm = (props) => {
   });
 
   const schema = yup.object().shape({
-    channelName: yup.string()
+    channelName: yup
+      .string()
       .min(3, 'Must be 3 to 20 characters')
       .max(20, 'Must be 3 to 20 characters')
       .required('Required')
-      .test('unique', 'Must be unique', (value) => !channelNames.includes(value)),
+      .test(
+        'unique',
+        'Must be unique',
+        (value) => !channelNames.includes(value),
+      ),
   });
 
   const formik = useFormik({
@@ -46,11 +49,28 @@ const ChannelNameForm = (props) => {
   return (
     <Form onSubmit={formik.handleSubmit}>
       <FormGroup>
-        <FormControl aria-label="channelName" name="channelName" ref={inputRef} onChange={formik.handleChange} className={inputClasses} value={formik.values.channelName} />
-        <FormControl.Feedback className="d-block mb-2" type="invalid">{formik.errors.channelName}</FormControl.Feedback>
+        <FormControl
+          aria-label="channelName"
+          name="channelName"
+          ref={inputRef}
+          onChange={formik.handleChange}
+          className={inputClasses}
+          value={formik.values.channelName}
+        />
+        <FormControl.Feedback className="d-block mb-2" type="invalid">
+          {formik.errors.channelName}
+        </FormControl.Feedback>
         <div className="d-flex justify-content-end">
-          <Button className="mr-2" variant="secondary" onClick={onCancel}>Cancel</Button>
-          <Button variant="primary" type="submit" disabled={formik.isSubmitting || !!formik.errors.channelName}>Submit</Button>
+          <Button className="mr-2" variant="secondary" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={formik.isSubmitting || !!formik.errors.channelName}
+          >
+            Submit
+          </Button>
         </div>
       </FormGroup>
     </Form>

@@ -1,4 +1,8 @@
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import mockedAxios from 'axios';
@@ -54,10 +58,14 @@ it('tests adding a channel', async () => {
 
   expect(document.activeElement).toBe(input);
   userEvent.type(input, 'a');
-  expect(await screen.findByText('Must be 3 to 20 characters')).toBeInTheDocument();
+  expect(
+    await screen.findByText('Must be 3 to 20 characters'),
+  ).toBeInTheDocument();
   expect(submit).toBeDisabled();
   userEvent.type(input, 'aa');
-  await waitForElementToBeRemoved(() => screen.getByText('Must be 3 to 20 characters'));
+  await waitForElementToBeRemoved(() =>
+    screen.getByText('Must be 3 to 20 characters'),
+  );
   userEvent.clear(input);
   expect(await screen.findByText('Required')).toBeInTheDocument();
   userEvent.type(input, 'random');
@@ -74,7 +82,9 @@ it('tests adding a channel', async () => {
 
 it('tests renaming a channel', async () => {
   tryCreateChannel('my channel');
-  expect(await screen.findByRole('button', { name: /my channel/i })).toBeInTheDocument();
+  expect(
+    await screen.findByRole('button', { name: /my channel/i }),
+  ).toBeInTheDocument();
   const dropdown = screen.getByRole('button', { name: /dropdown/i });
   userEvent.click(dropdown);
   const rename = screen.getByRole('button', { name: /rename/i });
@@ -86,10 +96,14 @@ it('tests renaming a channel', async () => {
 
   expect(document.activeElement).toBe(input);
   userEvent.type(input, 'a');
-  expect(await screen.findByText('Must be 3 to 20 characters')).toBeInTheDocument();
+  expect(
+    await screen.findByText('Must be 3 to 20 characters'),
+  ).toBeInTheDocument();
   expect(submit).toBeDisabled();
   userEvent.type(input, 'aa');
-  await waitForElementToBeRemoved(() => screen.getByText('Must be 3 to 20 characters'));
+  await waitForElementToBeRemoved(() =>
+    screen.getByText('Must be 3 to 20 characters'),
+  );
   userEvent.clear(input);
   expect(await screen.findByText('Required')).toBeInTheDocument();
   userEvent.type(input, 'my channel');
@@ -100,13 +114,17 @@ it('tests renaming a channel', async () => {
   expect(submit).toBeEnabled();
 
   userEvent.click(submit);
-  expect(await screen.findByRole('button', { name: 'not my channel' })).toBeInTheDocument();
+  expect(
+    await screen.findByRole('button', { name: 'not my channel' }),
+  ).toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'my channel' })).toBeNull();
 });
 
 it('tests removing a channel', async () => {
   tryCreateChannel('my channel');
-  expect(await screen.findByRole('button', { name: /my channel/i })).toBeInTheDocument();
+  expect(
+    await screen.findByRole('button', { name: /my channel/i }),
+  ).toBeInTheDocument();
   const dropdown = screen.getByRole('button', { name: /dropdown/i });
   userEvent.click(dropdown);
   const remove = screen.getByRole('button', { name: /remove/i });
@@ -114,6 +132,8 @@ it('tests removing a channel', async () => {
   const confirm = screen.getByRole('button', { name: /confirm/i });
   expect(confirm).toBeInTheDocument();
   userEvent.click(confirm);
-  expect(await screen.findByRole('button', { name: 'general' })).toBeInTheDocument();
+  expect(
+    await screen.findByRole('button', { name: 'general' }),
+  ).toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'my channel' })).toBeNull();
 });

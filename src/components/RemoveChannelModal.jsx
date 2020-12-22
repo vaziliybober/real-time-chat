@@ -6,8 +6,15 @@ import routes from '../routes.js';
 import useChannels from '../hooks/useChannels.js';
 
 const RemoveChannelModal = (props) => {
-  const { show, onClose, args: { removeId } } = props;
-  const [{ currentChannelId, defaultChannelId }, { setCurrentChannelId }] = useChannels();
+  const {
+    show,
+    onClose,
+    args: { removeId },
+  } = props;
+  const [
+    { currentChannelId, defaultChannelId },
+    { setCurrentChannelId },
+  ] = useChannels();
   const [removeSubmitting, setRemoveSubmitting] = useState(false);
   const [removeError, setRemoveError] = useState('');
 
@@ -44,11 +51,17 @@ const RemoveChannelModal = (props) => {
           <Button className="mr-2" variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleRemove} disabled={removeSubmitting}>
+          <Button
+            variant="danger"
+            onClick={handleRemove}
+            disabled={removeSubmitting}
+          >
             Confirm
           </Button>
         </div>
-        <FormControl.Feedback className="d-block mb-2" type="invalid">{removeError}</FormControl.Feedback>
+        <FormControl.Feedback className="d-block mb-2" type="invalid">
+          {removeError}
+        </FormControl.Feedback>
       </Modal.Body>
     </Modal>
   );

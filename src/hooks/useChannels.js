@@ -31,7 +31,8 @@ export default () => {
       currentChannelId,
     },
     {
-      setCurrentChannelId: (id) => dispatch(actions.setCurrentChannelId({ id })),
+      setCurrentChannelId: (id) =>
+        dispatch(actions.setCurrentChannelId({ id })),
     },
   ];
 };

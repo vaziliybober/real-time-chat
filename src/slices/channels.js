@@ -6,7 +6,10 @@ import _ from 'lodash';
 const slice = createSlice({
   name: 'channels',
   initialState: {
-    byId: [], allIds: [], currentId: null, defaultId: null,
+    byId: [],
+    allIds: [],
+    currentId: null,
+    defaultId: null,
   },
   reducers: {
     setCurrentChannelId: (state, { payload }) => {

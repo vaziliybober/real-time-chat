@@ -1,13 +1,14 @@
 ---
-
 plugins:
   - functional
 
 extends:
   - airbnb
-  - "plugin:jest/recommended"
-  - "plugin:functional/external-recommended"
-  - "plugin:functional/recommended"
+  - 'plugin:jest/recommended'
+  - 'plugin:functional/external-recommended'
+  - 'plugin:functional/recommended'
+  - prettier
+  - prettier/react
 
 parser: babel-eslint
 

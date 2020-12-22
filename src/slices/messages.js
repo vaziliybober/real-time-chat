@@ -19,7 +19,9 @@ const slice = createSlice({
       const { id: channelId } = payload;
       return {
         byId: _.omitBy(state.byId, (m) => m.channelId === channelId),
-        allIds: state.allIds.filter((id) => state.byId[id].channelId !== channelId),
+        allIds: state.allIds.filter(
+          (id) => state.byId[id].channelId !== channelId,
+        ),
       };
     },
   },

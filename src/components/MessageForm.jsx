@@ -1,12 +1,14 @@
-import React, {
-  useRef, useEffect, useContext,
-} from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { connect } from 'react-redux';
 import { useFormik } from 'formik';
 import cn from 'classnames';
 import axios from 'axios';
 import {
-  Form, FormGroup, InputGroup, FormControl, Button,
+  Form,
+  FormGroup,
+  InputGroup,
+  FormControl,
+  Button,
 } from 'react-bootstrap';
 
 import routes from '../routes.js';
@@ -32,7 +34,9 @@ const MessageForm = (props) => {
         attributes: message,
       };
       try {
-        await axios.post(routes.channelMessagesPath(message.channelId), { data });
+        await axios.post(routes.channelMessagesPath(message.channelId), {
+          data,
+        });
         formik.resetForm();
       } catch (e) {
         formik.setErrors({
@@ -66,8 +70,16 @@ const MessageForm = (props) => {
             value={formik.values.message}
             disabled={formik.isSubmitting}
           />
-          <Button aria-label="submit" type="submit" disabled={formik.isSubmitting}>Submit</Button>
-          <FormControl.Feedback className="d-block" type="invalid">{formik.errors.message}</FormControl.Feedback>
+          <Button
+            aria-label="submit"
+            type="submit"
+            disabled={formik.isSubmitting}
+          >
+            Submit
+          </Button>
+          <FormControl.Feedback className="d-block" type="invalid">
+            {formik.errors.message}
+          </FormControl.Feedback>
         </InputGroup>
       </FormGroup>
     </Form>
@@ -75,7 +87,9 @@ const MessageForm = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const { channels: { currentId } } = state;
+  const {
+    channels: { currentId },
+  } = state;
   return {
     currentChannelId: currentId,
   };

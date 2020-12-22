@@ -6,9 +6,11 @@ const select = createSelector(
     currentChannelId: channels.currentId,
     messages,
   }),
-  ({ currentChannelId, messages }) => messages.allIds
-    .map((id) => messages.byId[id])
-    .filter((m) => m.channelId === currentChannelId),
+
+  ({ currentChannelId, messages }) =>
+    messages.allIds
+      .map((id) => messages.byId[id])
+      .filter((m) => m.channelId === currentChannelId),
 );
 
 export default () => {
