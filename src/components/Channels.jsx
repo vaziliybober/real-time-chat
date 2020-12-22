@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 
 import useChannels from '../hooks/useChannels.js';
@@ -6,7 +6,7 @@ import useModals from '../hooks/useModals.js';
 
 const Channels = () => {
   const [
-    {channels, currentChannelId },
+    { channels, currentChannelId },
     { setCurrentChannelId },
   ] = useChannels();
 
