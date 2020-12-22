@@ -27,7 +27,7 @@ test-coverage:
 lint:
 	npx eslint . --ext js,jsx
 
-prettify:
+prettier:
 	npx prettier . --write
 
 publish:
@@ -35,5 +35,8 @@ publish:
 
 deploy:
 	git push heroku
+
+check-prettier:
+	bash check-prettier.sh
 
 .PHONY: test
