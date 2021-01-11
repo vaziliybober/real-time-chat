@@ -38,11 +38,11 @@ const buildStore = () => {
 export default () => {
   /* eslint-disable no-new */
   new Rollbar({
-    accessToken: '9fd42b56bd4e4003aebf42e15e27d794',
+    accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
     captureUncaught: true,
     captureUnhandledRejections: true,
     payload: {
-      environment: process.env.NODE_ENV || 'development',
+      environment: process.env.NODE_ENV,
     },
   });
   /* eslint-enable no-new */
