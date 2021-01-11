@@ -52,6 +52,7 @@ const ChannelNameForm = (props) => {
         <FormControl
           aria-label="channelName"
           name="channelName"
+          autoComplete="off"
           ref={inputRef}
           onChange={formik.handleChange}
           className={inputClasses}
