@@ -22,12 +22,11 @@ const slice = createSlice({
     },
     removeChannel: (state, { payload }) => {
       const { id } = payload;
-      return {
-        byId: _.omit(state.byId, id),
-        allIds: _.without(state.allIds, id),
-        currentId: id === state.currentId ? state.defaultId : state.currentId,
-        defaultId: state.defaultId,
-      };
+      state.byId = _.omit(state.byId, id);
+      state.allIds = _.without(state.allIds, id);
+      if (id === state.currentId) {
+        state.currentId = state.defaultId;
+      }
     },
     renameChannel: (state, { payload }) => {
       const { channel } = payload;

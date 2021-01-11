@@ -17,12 +17,10 @@ const slice = createSlice({
   extraReducers: {
     [channelsActions.removeChannel]: (state, { payload }) => {
       const { id: channelId } = payload;
-      return {
-        byId: _.omitBy(state.byId, (m) => m.channelId === channelId),
-        allIds: state.allIds.filter(
-          (id) => state.byId[id].channelId !== channelId,
-        ),
-      };
+      state.allIds = state.allIds.filter(
+        (id) => state.byId[id].channelId !== channelId,
+      );
+      state.byId = _.omitBy(state.byId, (m) => m.channelId === channelId);
     },
   },
 });
