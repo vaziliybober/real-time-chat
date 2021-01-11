@@ -21,7 +21,7 @@ const MessageBox = (props) => {
           className="chat-messages overflow-auto mb-3"
         >
           {messages.map((message) => (
-            <div key={message.id}>
+            <div className="text-break" key={message.id}>
               <b>{message.userName}</b>
               {`: ${message.text}`}
             </div>
