@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import { Button, Form, FormGroup, FormControl } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -12,18 +12,22 @@ const ChannelNameForm = (props) => {
     inputRef.current.focus();
   }, []);
 
-  const schema = yup.object().shape({
-    channelName: yup
-      .string()
-      .min(3, 'Must be 3 to 20 characters')
-      .max(20, 'Must be 3 to 20 characters')
-      .required('Required')
-      .test(
-        'unique',
-        'Must be unique',
-        (value) => !channelNames.includes(value),
-      ),
-  });
+  const schema = useMemo(
+    () =>
+      yup.object().shape({
+        channelName: yup
+          .string()
+          .min(3, 'Must be 3 to 20 characters')
+          .max(20, 'Must be 3 to 20 characters')
+          .required('Required')
+          .test(
+            'unique',
+            'Must be unique',
+            (value) => !channelNames.includes(value),
+          ),
+      }),
+    [channelNames],
+  );
 
   const formik = useFormik({
     initialValues: {
