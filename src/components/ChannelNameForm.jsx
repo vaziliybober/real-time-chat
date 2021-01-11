@@ -10,7 +10,7 @@ const ChannelNameForm = (props) => {
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
-  });
+  }, []);
 
   const schema = yup.object().shape({
     channelName: yup
@@ -30,7 +30,8 @@ const ChannelNameForm = (props) => {
       channelName: '',
     },
     validationSchema: schema,
-    validateOnChange: true,
+    validateOnBlur: true,
+    validateOnChange: false,
     onSubmit: async ({ channelName }) => {
       try {
         await onSubmit({ channelName });
@@ -54,6 +55,7 @@ const ChannelNameForm = (props) => {
           name="channelName"
           autoComplete="off"
           ref={inputRef}
+          onBlur={formik.handleBlur}
           onChange={formik.handleChange}
           className={inputClasses}
           value={formik.values.channelName}
