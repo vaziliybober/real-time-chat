@@ -53,25 +53,31 @@ it('tests adding a channel', async () => {
 
   const input = screen.getByRole('textbox', { name: /channelName/i });
   const submit = screen.getByRole('button', { name: /submit/i });
+  const cancel = screen.getByRole('button', { name: /cancel/i });
   expect(input).toBeInTheDocument();
   expect(submit).toBeInTheDocument();
 
   expect(document.activeElement).toBe(input);
   userEvent.type(input, 'a');
+  cancel.focus();
   expect(
     await screen.findByText('Must be 3 to 20 characters'),
   ).toBeInTheDocument();
   expect(submit).toBeDisabled();
   userEvent.type(input, 'aa');
+  cancel.focus();
   await waitForElementToBeRemoved(() =>
     screen.getByText('Must be 3 to 20 characters'),
   );
   userEvent.clear(input);
+  cancel.focus();
   expect(await screen.findByText('Required')).toBeInTheDocument();
   userEvent.type(input, 'random');
+  cancel.focus();
   expect(await screen.findByText('Must be unique')).toBeInTheDocument();
   userEvent.clear(input);
   userEvent.type(input, 'my channel');
+  cancel.focus();
   await waitForElementToBeRemoved(() => screen.getByText('Must be unique'));
   expect(submit).toBeEnabled();
 
@@ -91,35 +97,38 @@ it('tests renaming a channel', async () => {
   userEvent.click(rename);
   const input = screen.getByRole('textbox', { name: /channelName/i });
   const submit = screen.getByRole('button', { name: /submit/i });
+  const cancel = screen.getByRole('button', { name: /cancel/i });
   expect(input).toBeInTheDocument();
   expect(submit).toBeInTheDocument();
-
   expect(document.activeElement).toBe(input);
   userEvent.type(input, 'a');
+  cancel.focus();
   expect(
     await screen.findByText('Must be 3 to 20 characters'),
   ).toBeInTheDocument();
   expect(submit).toBeDisabled();
   userEvent.type(input, 'aa');
+  cancel.focus();
   await waitForElementToBeRemoved(() =>
     screen.getByText('Must be 3 to 20 characters'),
   );
   userEvent.clear(input);
+  cancel.focus();
   expect(await screen.findByText('Required')).toBeInTheDocument();
   userEvent.type(input, 'my channel');
+  cancel.focus();
   expect(await screen.findByText('Must be unique')).toBeInTheDocument();
   userEvent.clear(input);
   userEvent.type(input, 'not my channel');
+  cancel.focus();
   await waitForElementToBeRemoved(() => screen.getByText('Must be unique'));
   expect(submit).toBeEnabled();
-
   userEvent.click(submit);
   expect(
     await screen.findByRole('button', { name: 'not my channel' }),
   ).toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'my channel' })).toBeNull();
 });
-
 it('tests removing a channel', async () => {
   tryCreateChannel('my channel');
   expect(

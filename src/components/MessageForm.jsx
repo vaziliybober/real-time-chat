@@ -48,7 +48,6 @@ const MessageForm = (props) => {
   const focusRef = useRef();
   useEffect(() => {
     focusRef.current.focus();
-    console.log('hello');
   }, [formik.isSubmitting]);
 
   const cnInput = cn('mr-2', {
