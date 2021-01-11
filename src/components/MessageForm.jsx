@@ -22,7 +22,6 @@ const MessageForm = (props) => {
     initialValues: {
       message: '',
     },
-    validateOnChange: false,
     onSubmit: async (values) => {
       const { currentChannelId } = props;
       const message = {
@@ -65,6 +64,7 @@ const MessageForm = (props) => {
             autoComplete="off"
             name="message"
             required
+            pattern=".*\S+.*"
             ref={focusRef}
             onChange={formik.handleChange}
             value={formik.values.message}
