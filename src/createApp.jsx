@@ -9,7 +9,7 @@ import Rollbar from 'rollbar';
 import faker from 'faker';
 import { io } from 'socket.io-client';
 import App from './components/App.jsx';
-import UserNameContext from './contexts/UserNameContext.js';
+import { UserNameProvider } from './contexts/UserNameContext.jsx';
 import reducer, { actions } from './slices/index.js';
 
 const buildStore = () => {
@@ -36,18 +36,18 @@ const buildStore = () => {
 };
 
 export default () => {
-  /* eslint-disable no-new */
-  new Rollbar({
-    accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-    payload: {
-      environment: process.env.NODE_ENV,
-    },
-  });
-  /* eslint-enable no-new */
-
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV === 'production') {
+    /* eslint-disable no-new */
+    new Rollbar({
+      accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
+      captureUncaught: true,
+      captureUnhandledRejections: true,
+      payload: {
+        environment: process.env.NODE_ENV,
+      },
+    });
+    /* eslint-enable no-new */
+  } else {
     localStorage.debug = 'chat:*';
   }
 
@@ -82,9 +82,9 @@ export default () => {
 
   return (
     <Provider store={store}>
-      <UserNameContext.Provider value={userName}>
+      <UserNameProvider value={userName}>
         <App />
-      </UserNameContext.Provider>
+      </UserNameProvider>
     </Provider>
   );
 };

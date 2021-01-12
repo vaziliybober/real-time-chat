@@ -13,7 +13,11 @@ const Channels = () => {
   const [
     ,
     ,
-    { showAddChannelsModal, showRemoveChannelsModal, showRenameChannelsModal },
+    {
+      chooseAddChannelsModal,
+      chooseRemoveChannelsModal,
+      chooseRenameChannelsModal,
+    },
   ] = useModals();
 
   const getSwitchHandler = (id) => () => {
@@ -25,7 +29,7 @@ const Channels = () => {
       <div className="d-flex mb-2">
         <span>Channels</span>
         <Button
-          onClick={showAddChannelsModal}
+          onClick={chooseAddChannelsModal}
           variant="link"
           className="ml-auto p-0"
         >
@@ -55,14 +59,14 @@ const Channels = () => {
                     <Dropdown.Menu>
                       <Dropdown.Item
                         onClick={() => {
-                          showRemoveChannelsModal(id);
+                          chooseRemoveChannelsModal(id);
                         }}
                       >
                         Remove
                       </Dropdown.Item>
                       <Dropdown.Item
                         onClick={() => {
-                          showRenameChannelsModal(id);
+                          chooseRenameChannelsModal(id);
                         }}
                       >
                         Rename

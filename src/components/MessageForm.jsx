@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useFormik } from 'formik';
 import cn from 'classnames';
@@ -13,10 +13,10 @@ import {
 
 import routes from '../routes.js';
 import { actions } from '../slices/index.js';
-import UserNameContext from '../contexts/UserNameContext.js';
+import useUserName from '../hooks/useUserName.js';
 
 const MessageForm = (props) => {
-  const userName = useContext(UserNameContext);
+  const userName = useUserName();
 
   const formik = useFormik({
     initialValues: {
