@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 
 import { actions } from '../slices/index.js';
 
