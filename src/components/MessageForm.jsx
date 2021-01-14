@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { connect } from 'react-redux';
 import { useFormik } from 'formik';
 import cn from 'classnames';
 import axios from 'axios';
@@ -12,18 +11,18 @@ import {
 } from 'react-bootstrap';
 
 import routes from '../routes.js';
-import { actions } from '../slices/index.js';
+import useChannels from '../hooks/useChannels.js';
 import useUserName from '../hooks/useUserName.js';
 
-const MessageForm = (props) => {
+const MessageForm = () => {
   const userName = useUserName();
+  const [{ currentChannelId }] = useChannels();
 
   const formik = useFormik({
     initialValues: {
       message: '',
     },
     onSubmit: async (values) => {
-      const { currentChannelId } = props;
       const message = {
         text: values.message,
         userName,
@@ -86,17 +85,4 @@ const MessageForm = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const {
-    channels: { currentId },
-  } = state;
-  return {
-    currentChannelId: currentId,
-  };
-};
-
-const mapDispatchToProps = {
-  createMessage: actions.createMessage,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MessageForm);
+export default MessageForm;
